@@ -1,6 +1,7 @@
 package tas.dfa.client.core.proxy;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import tas.dfa.client.core.handler.ModelHandler;
 import tas.dfa.common.core.proxy.CommonProxy;
 
 /**
@@ -12,5 +13,7 @@ public class ClientProxy extends CommonProxy
     public void preInit(FMLPreInitializationEvent event)
     {
         super.preInit(event);
+
+        ModelHandler.preInit();
     }
 }

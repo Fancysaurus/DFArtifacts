@@ -1,0 +1,5 @@
+#Misc
+itemGroup.dfa=DFArtifacts
+
+#Item Names
+item.dfa:testOrb.name=Orb of Testing
