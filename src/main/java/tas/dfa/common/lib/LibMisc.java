@@ -10,4 +10,7 @@ public class LibMisc
     public static final String BUILD = "GRADLE:BUILD";
     public static final String VERSION = "GRADLE:VERSION-" + BUILD;
 
+    public static final String COMMON_PROXY = "tas.dfa.common.core.proxy.CommonProxy";
+    public static final String CLIENT_PROXY = "tas.dfa.client.core.proxy.ClientProxy";
+
 }
