@@ -29,4 +29,15 @@ public class Config
         // Fall through = no-go
         return false;
     }
+
+    public boolean isValidBaseItem(ItemStack stack)
+    {
+        Item item = stack.getItem();
+
+        if(item == Items.IRON_INGOT) return true;
+        if(item == Items.DIAMOND) return true;
+
+        // Fall through = no-go
+        return false;
+    }
 }
