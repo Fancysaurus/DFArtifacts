@@ -65,4 +65,9 @@ public class BaseBlock extends Block implements IDFABlock
     public ItemMeshDefinition getCustomMeshDefinition() {
         return null;
     }
+
+    @Override
+    public Class getVariantEnum() {
+        return null;
+    }
 }

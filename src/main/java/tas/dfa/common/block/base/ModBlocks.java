@@ -1,5 +1,6 @@
 package tas.dfa.common.block.base;
 
+import tas.dfa.common.block.BlockAncientAnvil;
 import tas.dfa.common.block.testBlock;
 
 /**
@@ -9,9 +10,11 @@ public class ModBlocks
 {
 
     public static BaseBlock testBlock;
+    public static BaseBlock ancientAnvil;
 
     public static void init()
     {
         testBlock = new testBlock();
+        ancientAnvil = new BlockAncientAnvil();
     }
 }

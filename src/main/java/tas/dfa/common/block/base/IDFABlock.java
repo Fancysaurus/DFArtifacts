@@ -8,9 +8,11 @@ import tas.dfa.common.item.base.IVariantHolder;
 /**
  * Created by fancysaurus on 8/4/16.
  */
-public interface IDFABlock extends IVariantHolder
+public interface IDFABlock extends IVariantHolder, IVariantEnumHolder
 {
     String getBareName();
     IProperty[] getIgnoredProperties();
+
     EnumRarity getBlockRarity(ItemStack stack);
+
 }
