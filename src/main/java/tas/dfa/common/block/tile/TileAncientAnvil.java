@@ -20,22 +20,56 @@ public class TileAncientAnvil extends BaseTile implements ITickable {
     @Override
     public void update()
     {
+        // Only handle item consumption on the server!
+        if(worldObj.isRemote) return;
+
         List<EntityItem> items = worldObj.getEntitiesWithinAABB(
                 EntityItem.class,
                 new AxisAlignedBB(
                         pos,
                         pos.add(1, 2, 1)));
 
-        for(EntityItem item : items)
-        {
-            maybeConsumeItem(item);
+        for(EntityItem item : items) {
+            ItemStack stack = item.getEntityItem();
+
+            if(getIsWaitingForBaseItems()){
+                if(!Config.instance.isValidBaseItem(stack))
+                    continue;
+                consumeItem(item);
+                setIsWaitingForBaseItems(false);
+            }
+            else {
+                if(!Config.instance.isValidDrawItem(stack))
+                    continue;
+                consumeItem(item);
+                doDraw();
+            }
         }
+    }
+
+    @Override
+    public void readCustomNBT(NBTTagCompound tag) {
+        // TODO: ?
+    }
+
+    @Override
+    public void writeCustomNBT(NBTTagCompound tag) {
+        // TODO: ?
     }
 
     public boolean getIsWaitingForBaseItems()
     {
         // TODO: Check NBT data
         return false;
+    }
+
+    private void consumeItem(EntityItem entity) {
+        ItemStack stack = entity.getEntityItem();
+        stack.stackSize--;
+        if(stack.stackSize == 0)
+            entity.setDead();
+        else
+            entity.setEntityItemStack(stack);
     }
 
     private void setIsWaitingForBaseItems(boolean value)
@@ -49,41 +83,5 @@ public class TileAncientAnvil extends BaseTile implements ITickable {
 
         // TODO: Add random value to score
         // TODO: Check for overflow of score
-    }
-
-    private boolean shouldConsumeItem(EntityItem item) {
-        if(worldObj.isRemote) return false;
-
-        ItemStack stack = item.getEntityItem();
-
-        if(getIsWaitingForBaseItems())
-            return Config.instance.isValidBaseItem(stack);
-        else
-            return Config.instance.isValidDrawItem(stack);
-    }
-
-    private void maybeConsumeItem(EntityItem item) {
-
-        // Bail if we shouldn't eat this item
-        if(!shouldConsumeItem(item)) return;
-
-        ItemStack stack  = item.getEntityItem();
-        stack.stackSize--;
-
-        // TODO: Sync these values... how?
-        if(stack.stackSize == 0)
-            item.setDead();
-        else
-            item.setEntityItemStack(stack);
-    }
-
-    @Override
-    public void writeCustomNBT(NBTTagCompound compound) {
-
-    }
-
-    @Override
-    public void readCustomNBT(NBTTagCompound compound) {
-
     }
 }
