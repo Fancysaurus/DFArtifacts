@@ -3,7 +3,7 @@
   "defaults":
   {
     "textures": {},
-    "model":"dfa:ancientAnvil.obj",
+    "model":"dfa:pool.obj",
     "transform":"forge:default-block"
   },
   "variants": {

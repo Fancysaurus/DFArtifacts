@@ -6,4 +6,5 @@ package tas.dfa.common.lib;
 public class LibBlocks
 {
     public static final String ancientAnvil = "ancientAnvil";
+    public static final String pool = "pool";
 }

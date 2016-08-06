@@ -1,6 +1,7 @@
 package tas.dfa.common.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import tas.dfa.common.block.base.BaseBlock;
 
 /**
@@ -11,4 +12,11 @@ public class testBlock extends BaseBlock {
     {
         super("testBlock",Material.ANVIL);
     }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+
 }
