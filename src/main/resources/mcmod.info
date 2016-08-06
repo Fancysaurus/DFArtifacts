@@ -4,7 +4,7 @@
   "name": "DFArtifacts",
   "description": "A mod about strange moods and dorfyness",
   "version": "0.0.0.0",
-  "mcversion": "${mcversion}",
+  "mcversion": "1.10.2",
   "url": "",
   "updateUrl": "",
   "authorList": ["Fancysaurus","Aravol"],
