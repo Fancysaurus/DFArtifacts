@@ -1,6 +1,7 @@
 package tas.dfa.common.block.tile;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -27,12 +28,7 @@ public class TileAncientAnvil extends BaseTile implements ITickable {
 
         for(EntityItem item : items)
         {
-            if(getIsWaitingForBaseItems())
-            {
-                // TODO: Check if item is a base item
-                // TODO: Check if item is a draw item
-                // TODO: Consume an item from the stack
-            }
+            maybeConsumeItem(item);
         }
     }
 
@@ -53,6 +49,19 @@ public class TileAncientAnvil extends BaseTile implements ITickable {
 
         // TODO: Add random value to score
         // TODO: Check for overflow of score
+    }
+
+    private boolean shouldConsumeItem(EntityItem item) {
+        return false;
+    }
+
+    private void maybeConsumeItem(EntityItem item) {
+
+        // Bail if we shouldn't eat this item
+        if(!shouldConsumeItem(item)) return;
+
+        // TODO: Consume the item
+        // TODO: Adjust extended data appropriately
     }
 
     @Override
