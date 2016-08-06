@@ -1,10 +1,12 @@
 package tas.dfa.common.block.tile;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import tas.dfa.Api.Config;
+import tas.dfa.common.block.tile.base.BaseTile;
 
 import java.util.List;
 import java.util.Random;
@@ -12,7 +14,7 @@ import java.util.Random;
 /**
  * Created by David on 8/4/2016.
  */
-public class TileAncientAnvil extends TileEntity implements ITickable {
+public class TileAncientAnvil extends BaseTile implements ITickable {
 
     @Override
     public void update()
@@ -51,5 +53,15 @@ public class TileAncientAnvil extends TileEntity implements ITickable {
 
         // TODO: Add random value to score
         // TODO: Check for overflow of score
+    }
+
+    @Override
+    public void writeCustomNBT(NBTTagCompound compound) {
+
+    }
+
+    @Override
+    public void readCustomNBT(NBTTagCompound compound) {
+
     }
 }

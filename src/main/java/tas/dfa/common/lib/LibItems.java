@@ -6,4 +6,5 @@ package tas.dfa.common.lib;
 public class LibItems
 {
     public static final String testOrb = "testOrb";
+    public static final String soulWater ="soulWater";
 }

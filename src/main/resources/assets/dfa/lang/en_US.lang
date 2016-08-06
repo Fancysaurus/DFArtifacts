@@ -3,3 +3,8 @@ itemGroup.dfa=DFArtifacts
 
 #Item Names
 item.dfa:testOrb.name=Orb of Testing
+item.dfa:soulWater.name=Soul Water
+
+#Block Names
+tile.dfa:ancientAnvil.name=Anvil of the Ancients
+tile.dfa:pool.name=Pool of Reflection
