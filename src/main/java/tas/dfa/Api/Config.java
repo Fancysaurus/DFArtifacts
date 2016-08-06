@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 public class Config
 {
     // TODO: Post-Jam support - rework this into a config file so end users can modify its contents
+    public static Config instance = new Config();
 
     public boolean isValidDrawItem(ItemStack stack)
     {

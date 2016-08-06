@@ -24,7 +24,7 @@ public class TileAncientAnvil extends BaseTile implements ITickable {
                 EntityItem.class,
                 new AxisAlignedBB(
                         pos,
-                        pos.add(1, 1, 1)));
+                        pos.add(1, 2, 1)));
 
         for(EntityItem item : items)
         {
@@ -52,7 +52,14 @@ public class TileAncientAnvil extends BaseTile implements ITickable {
     }
 
     private boolean shouldConsumeItem(EntityItem item) {
-        return false;
+        if(worldObj.isRemote) return false;
+
+        ItemStack stack = item.getEntityItem();
+
+        if(getIsWaitingForBaseItems())
+            return Config.instance.isValidBaseItem(stack);
+        else
+            return Config.instance.isValidDrawItem(stack);
     }
 
     private void maybeConsumeItem(EntityItem item) {
@@ -60,8 +67,14 @@ public class TileAncientAnvil extends BaseTile implements ITickable {
         // Bail if we shouldn't eat this item
         if(!shouldConsumeItem(item)) return;
 
-        // TODO: Consume the item
-        // TODO: Adjust extended data appropriately
+        ItemStack stack  = item.getEntityItem();
+        stack.stackSize--;
+
+        // TODO: Sync these values... how?
+        if(stack.stackSize == 0)
+            item.setDead();
+        else
+            item.setEntityItemStack(stack);
     }
 
     @Override
