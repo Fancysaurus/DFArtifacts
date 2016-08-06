@@ -20,6 +20,7 @@ public class BlockAncientAnvil extends BaseBlock implements ITileEntityProvider{
     {
         super(LibBlocks.ancientAnvil,Material.ANVIL);
         setSoundType(SoundType.ANVIL);
+        //this.setDefaultState(this.blockState.getBaseState());
     }
 
     @Override
@@ -41,4 +42,6 @@ public class BlockAncientAnvil extends BaseBlock implements ITileEntityProvider{
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileAncientAnvil();
     }
+
+
 }
