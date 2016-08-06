@@ -2,6 +2,7 @@ package tas.dfa.common.block.tile;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import tas.dfa.Api.Config;
 
@@ -11,7 +12,7 @@ import java.util.Random;
 /**
  * Created by David on 8/4/2016.
  */
-public class TileAncientAnvil extends TileEntity {
+public class TileAncientAnvil extends TileEntity implements ITickable {
 
     @Override
     public void update()
