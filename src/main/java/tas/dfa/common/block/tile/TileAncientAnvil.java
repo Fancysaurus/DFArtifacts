@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import tas.dfa.Api.Config;
@@ -17,39 +18,10 @@ import java.util.Random;
 /**
  * Created by David on 8/4/2016.
  */
-public class TileAncientAnvil extends BaseTile implements ITickable {
+public class TileAncientAnvil extends BaseTile {
 
     private int currentDrawValue = 0;
     private boolean isWaitingForBaseItem = true;
-
-    @Override
-    public void update() {
-        // Only handle item consumption on the server!
-        if(worldObj.isRemote) return;
-
-        List<EntityItem> items = worldObj.getEntitiesWithinAABB(
-                EntityItem.class,
-                new AxisAlignedBB(
-                        pos,
-                        pos.add(1, 2, 1)));
-
-        for(EntityItem item : items) {
-            ItemStack stack = item.getEntityItem();
-
-            if(isWaitingForBaseItem){
-                if(!Config.instance.isValidBaseItem(stack))
-                    continue;
-                consumeItem(item);
-                isWaitingForBaseItem = false;
-            }
-            else {
-                if(!Config.instance.isValidDrawItem(stack))
-                    continue;
-                consumeItem(item);
-                doDraw();
-            }
-        }
-    }
 
     @Override
     public void readCustomNBT(NBTTagCompound tag) {
@@ -68,28 +40,34 @@ public class TileAncientAnvil extends BaseTile implements ITickable {
         tag.setInteger("currentDrawValue", currentDrawValue);
     }
 
-    public void activate(EntityPlayer playerIn) {
-        if(currentDrawValue > 21)
-            ; // TODO: Punish the greedy player!
-        else
-            ; // TODO: Reward player with an artifact!
+    public boolean activate(EntityPlayer playerIn) {
+        ItemStack stack = playerIn.getHeldItemMainhand();
 
-        reset();
+        if(stack == null) {
+            finish(playerIn);
+        }
+        else {
+            if (isWaitingForBaseItem) {
+                if (!Config.instance.isValidBaseItem(stack)) return false;
+                stack.stackSize--;
+                isWaitingForBaseItem = false;
+            } else {
+                if (!Config.instance.isValidDrawItem(stack)) return false;
+                stack.stackSize--;
+                doDraw();
+            }
+
+            if (stack.stackSize == 0)
+                playerIn.setHeldItem(EnumHand.MAIN_HAND, null);
+        }
+
+        return true;
     }
 
-    public void reset() {
-        isWaitingForBaseItem = false;
+    private void reset() {
+        isWaitingForBaseItem = true;
         currentDrawValue = 0;
         markDirty();
-    }
-
-    private void consumeItem(EntityItem entity) {
-        ItemStack stack = entity.getEntityItem();
-        stack.stackSize--;
-        if(stack.stackSize == 0)
-            entity.setDead();
-        else
-            entity.setEntityItemStack(stack);
     }
 
     private void doDraw() {
@@ -99,5 +77,17 @@ public class TileAncientAnvil extends BaseTile implements ITickable {
         if(value > 10) value = 10;
 
         currentDrawValue += value;
+        markDirty();
+    }
+
+    private void finish(EntityPlayer playerIn) {
+        if(isWaitingForBaseItem) return;
+
+        if(currentDrawValue > 21)
+            ; // TODO: Punish the greedy player!
+        else
+            ; // TODO: Reward player with an artifact!
+
+        reset();
     }
 }

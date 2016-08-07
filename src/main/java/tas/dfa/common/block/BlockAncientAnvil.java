@@ -58,7 +58,7 @@ public class BlockAncientAnvil extends BaseBlock implements ITileEntityProvider{
             @Nullable ItemStack heldItem,
             EnumFacing side,
             float hitX, float hitY, float hitZ) {
-        if(worldIn.isRemote) return false;
+        if(worldIn.isRemote | hand == EnumHand.MAIN_HAND) return false;
 
         TileEntity entity = worldIn.getTileEntity(pos);
         TileAncientAnvil anvil =
@@ -68,7 +68,6 @@ public class BlockAncientAnvil extends BaseBlock implements ITileEntityProvider{
                         : null;
         if(anvil == null) return false;
 
-        anvil.activate(playerIn);
-        return true;
+        return anvil.activate(playerIn);
     }
 }
