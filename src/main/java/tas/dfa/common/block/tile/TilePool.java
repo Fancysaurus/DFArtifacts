@@ -28,6 +28,13 @@ public class TilePool extends BaseTile
             {
                 EntityItem output = new EntityItem(world,pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5, new ItemStack(ModItems.soulWater,1));
                 world.spawnEntityInWorld(output);
+                if(!player.capabilities.isCreativeMode)
+                {
+                    //Consume the item
+
+                    //Reduce the XP
+                    
+                }
             }
             else
             {
