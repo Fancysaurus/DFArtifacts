@@ -1,8 +1,18 @@
 package tas.dfa.Api;
 
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionAbsorption;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.datafix.fixes.PotionItems;
 
 /**
  * Created by David on 8/4/2016.
@@ -40,5 +50,27 @@ public class Config
 
         // Fall through = no-go
         return false;
+    }
+
+    // TODO: Move this section to Generation?
+    public ItemStack generateArtifactItem(int drawScore) {
+        ItemStack stack = new ItemStack(Items.DIAMOND_SWORD);
+        stack.addEnchantment(Enchantments.SHARPNESS, 3);
+        stack.setStackDisplayName("Testificalibur");
+
+        return stack;
+    }
+
+    public PotionEffect generateFailureDebuff() {
+        // HACK: Maybe I'm doing this wrong, but this seems to be the oly method for getting an existing PotionEffect
+        // for programmed application to a player
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("Id", 27);   // Bad Luck
+        tag.setInteger("Amplifier", 0);
+        tag.setInteger("Duration", 300);
+        tag.setBoolean("ShowParticles", true);
+
+        PotionEffect effect = PotionEffect.readCustomPotionEffectFromNBT(tag);
+        return effect;
     }
 }

@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -83,10 +84,14 @@ public class TileAncientAnvil extends BaseTile {
     private void finish(EntityPlayer playerIn) {
         if(isWaitingForBaseItem) return;
 
-        if(currentDrawValue > 21)
-            ; // TODO: Punish the greedy player!
-        else
-            ; // TODO: Reward player with an artifact!
+        if(currentDrawValue > 21) {
+            PotionEffect effect = Config.instance.generateFailureDebuff();
+            if(effect != null) playerIn.addPotionEffect(effect);
+        }
+        else {
+            ItemStack stack = Config.instance.generateArtifactItem(currentDrawValue);
+            playerIn.inventory.addItemStackToInventory(stack);
+        }
 
         reset();
     }
