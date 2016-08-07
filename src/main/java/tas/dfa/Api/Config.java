@@ -1,6 +1,7 @@
 package tas.dfa.Api;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
@@ -13,6 +14,8 @@ import net.minecraft.potion.PotionAbsorption;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.datafix.fixes.PotionItems;
+
+import java.util.Random;
 
 /**
  * Created by David on 8/4/2016.
@@ -54,9 +57,40 @@ public class Config
 
     // TODO: Move this section to Generation?
     public ItemStack generateArtifactItem(int drawScore) {
-        ItemStack stack = new ItemStack(Items.DIAMOND_SWORD);
-        stack.addEnchantment(Enchantments.SHARPNESS, 3);
-        stack.setStackDisplayName("Testificalibur");
+        Random rng = new Random();
+
+        ItemStack stack = null;
+
+        // TODO: The following section should absolutely be based on config files... after the modjam
+        if(drawScore == 0) {
+            // A lump of coal for naughty children who contribute nothing to their artifacts.
+            stack = generateLumpOfCoal();
+        }
+        else if(drawScore <= 5) {
+            // Tier 1 - Iron gear with only improved durability
+            switch(rng.nextInt(3)) {
+                case 0:
+                    stack = generateWaffleIron();
+                    break;
+                default: break;
+            }
+        }
+        else if(drawScore <= 10) {
+            // Tier 2 - Iron gear with some minor enchantments
+        }
+        else if(drawScore <= 15) {
+            // Tier 3 - Diamond gear with some decent enchantments
+        }
+        else if(drawScore <= 20) {
+            // Tier 4 - Diamond gear with some sweet enchantments
+        }
+        else {
+            // Tier 5 - Diamond gear with impossible enchantments
+        }
+
+        // All artifacts are Unbreaking 5
+        if(stack != null)
+            stack.addEnchantment(Enchantments.UNBREAKING, 5);
 
         return stack;
     }
@@ -72,5 +106,20 @@ public class Config
 
         PotionEffect effect = PotionEffect.readCustomPotionEffectFromNBT(tag);
         return effect;
+    }
+
+    // TODO: These definitely need to be in their own place eventually
+    private ItemStack generateLumpOfCoal() {
+        ItemStack stack = new ItemStack(Items.COAL);
+        stack.setStackDisplayName("Lump of coal");
+
+        return stack;
+    }
+
+    private ItemStack generateWaffleIron() {
+        ItemStack stack = new ItemStack(Items.CHAINMAIL_CHESTPLATE);
+        stack.setStackDisplayName("Waffle Iron");
+
+        return stack;
     }
 }

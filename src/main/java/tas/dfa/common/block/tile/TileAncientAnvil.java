@@ -10,6 +10,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextComponentString;
 import tas.dfa.Api.Config;
 import tas.dfa.common.block.tile.base.BaseTile;
 
@@ -49,13 +50,19 @@ public class TileAncientAnvil extends BaseTile {
         }
         else {
             if (isWaitingForBaseItem) {
-                if (!Config.instance.isValidBaseItem(stack)) return false;
+                if (!Config.instance.isValidBaseItem(stack)) {
+                    playerIn.addChatComponentMessage(new TextComponentString("It all starts with iron or diamond..."));
+                    return false;
+                }
                 stack.stackSize--;
                 isWaitingForBaseItem = false;
             } else {
-                if (!Config.instance.isValidDrawItem(stack)) return false;
+                if (!Config.instance.isValidDrawItem(stack)) {
+                    playerIn.addChatComponentMessage(new TextComponentString("It takes magic to continue!"));
+                    return false;
+                }
                 stack.stackSize--;
-                doDraw();
+                doDraw(playerIn);
             }
 
             if (stack.stackSize == 0)
@@ -71,26 +78,45 @@ public class TileAncientAnvil extends BaseTile {
         markDirty();
     }
 
-    private void doDraw() {
+    private void doDraw(EntityPlayer playerIn) {
         Random rng = new Random();
 
-        int value = rng.nextInt(13) + 1;
-        if(value > 10) value = 10;
+        int value = rng.nextInt(3) + 1;
 
         currentDrawValue += value;
-        markDirty();
+        if(currentDrawValue > 21) {
+            playerIn.addChatMessage(new TextComponentString("You have gone too far!"));
+
+            PotionEffect effect = Config.instance.generateFailureDebuff();
+            if(effect != null) playerIn.addPotionEffect(effect);
+            reset();
+        }
+        else if(currentDrawValue == 21) {
+            playerIn.addChatComponentMessage(new TextComponentString("Perfect! Take your prize!"));
+        }
+        else {
+            markDirty();
+        }
     }
 
     private void finish(EntityPlayer playerIn) {
         if(isWaitingForBaseItem) return;
 
         if(currentDrawValue > 21) {
+            playerIn.addChatMessage(new TextComponentString("You have gone too far!"));
+
             PotionEffect effect = Config.instance.generateFailureDebuff();
             if(effect != null) playerIn.addPotionEffect(effect);
         }
         else {
             ItemStack stack = Config.instance.generateArtifactItem(currentDrawValue);
-            playerIn.inventory.addItemStackToInventory(stack);
+
+            if(stack != null) {
+                playerIn.addChatComponentMessage(
+                        new TextComponentString(
+                                "You have crafted the " + stack.getDisplayName()));
+                playerIn.inventory.addItemStackToInventory(stack);
+            }
         }
 
         reset();
