@@ -3,9 +3,14 @@ package tas.dfa.common.block.tile;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextComponentString;
 import tas.dfa.Api.Config;
 import tas.dfa.common.block.tile.base.BaseTile;
 
@@ -15,74 +20,105 @@ import java.util.Random;
 /**
  * Created by David on 8/4/2016.
  */
-public class TileAncientAnvil extends BaseTile implements ITickable
-{
+public class TileAncientAnvil extends BaseTile {
 
-    @Override
-    public void update() {
-        // Only handle item consumption on the server!
-        if(worldObj.isRemote) return;
-
-        List<EntityItem> items = worldObj.getEntitiesWithinAABB(
-                EntityItem.class,
-                new AxisAlignedBB(
-                        pos,
-                        pos.add(1, 2, 1)));
-
-        for(EntityItem item : items) {
-            ItemStack stack = item.getEntityItem();
-
-            if(getIsWaitingForBaseItems()){
-                if(!Config.instance.isValidBaseItem(stack))
-                    continue;
-                consumeItem(item);
-                setIsWaitingForBaseItems(false);
-            }
-            else {
-                if(!Config.instance.isValidDrawItem(stack))
-                    continue;
-                consumeItem(item);
-                doDraw();
-            }
-        }
-    }
+    private int currentDrawValue = 0;
+    private boolean isWaitingForBaseItem = true;
 
     @Override
     public void readCustomNBT(NBTTagCompound tag) {
-        // TODO: ?
+            isWaitingForBaseItem = tag.hasKey("isWaitingForBaseItem")
+                    ? tag.getBoolean("isWaitingForBaseItem")
+                    : true;
+
+            currentDrawValue = tag.hasKey("currentDrawValue")
+                    ? tag.getInteger("currentDrawValue")
+                    : 0;
     }
 
     @Override
     public void writeCustomNBT(NBTTagCompound tag) {
-        // TODO: ?
+        tag.setBoolean("isWaitingForBaseItem", isWaitingForBaseItem);
+        tag.setInteger("currentDrawValue", currentDrawValue);
     }
 
-    public boolean getIsWaitingForBaseItems() {
-        // TODO: Check NBT data
-        return false;
+    public boolean activate(EntityPlayer playerIn) {
+        ItemStack stack = playerIn.getHeldItemMainhand();
+
+        if(stack == null) {
+            finish(playerIn);
+        }
+        else {
+            if (isWaitingForBaseItem) {
+                if (!Config.instance.isValidBaseItem(stack)) {
+                    playerIn.addChatComponentMessage(new TextComponentString("It all starts with iron or diamond..."));
+                    return false;
+                }
+                stack.stackSize--;
+                isWaitingForBaseItem = false;
+            } else {
+                if (!Config.instance.isValidDrawItem(stack)) {
+                    playerIn.addChatComponentMessage(new TextComponentString("It takes magic to continue!"));
+                    return false;
+                }
+                stack.stackSize--;
+                doDraw(playerIn);
+            }
+
+            if (stack.stackSize == 0)
+                playerIn.setHeldItem(EnumHand.MAIN_HAND, null);
+        }
+
+        return true;
     }
 
-    private void consumeItem(EntityItem entity) {
-        ItemStack stack = entity.getEntityItem();
-        stack.stackSize--;
-        if(stack.stackSize == 0)
-            entity.setDead();
-        else
-            entity.setEntityItemStack(stack);
+    private void reset() {
+        isWaitingForBaseItem = true;
+        currentDrawValue = 0;
+        markDirty();
     }
 
-    private void setIsWaitingForBaseItems(boolean value) {
-        // TODO: Set NBT data
-    }
-
-    private void doDraw() {
+    private void doDraw(EntityPlayer playerIn) {
         Random rng = new Random();
 
-        // TODO: Add random value to score
-        // TODO: Check for overflow of score
+        int value = rng.nextInt(3) + 1;
+
+        currentDrawValue += value;
+        if(currentDrawValue > 21) {
+            playerIn.addChatMessage(new TextComponentString("You have gone too far!"));
+
+            PotionEffect effect = Config.instance.generateFailureDebuff();
+            if(effect != null) playerIn.addPotionEffect(effect);
+            reset();
+        }
+        else if(currentDrawValue == 21) {
+            playerIn.addChatComponentMessage(new TextComponentString("Perfect! Take your prize!"));
+        }
+        else {
+            markDirty();
+        }
     }
 
-    public void activate(EntityPlayer playerIn) {
-        // TODO: Check current data and either punish the player or give them an artifact
+    private void finish(EntityPlayer playerIn) {
+        if(isWaitingForBaseItem) return;
+
+        if(currentDrawValue > 21) {
+            playerIn.addChatMessage(new TextComponentString("You have gone too far!"));
+
+            PotionEffect effect = Config.instance.generateFailureDebuff();
+            if(effect != null) playerIn.addPotionEffect(effect);
+        }
+        else {
+            ItemStack stack = Config.instance.generateArtifactItem(currentDrawValue);
+
+            if(stack != null) {
+                playerIn.addChatComponentMessage(
+                        new TextComponentString(
+                                "You have crafted the " + stack.getDisplayName()));
+                playerIn.inventory.addItemStackToInventory(stack);
+            }
+        }
+
+        reset();
     }
 }

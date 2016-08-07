@@ -1,8 +1,21 @@
 package tas.dfa.Api;
 
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionAbsorption;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.datafix.fixes.PotionItems;
+
+import java.util.Random;
 
 /**
  * Created by David on 8/4/2016.
@@ -40,5 +53,73 @@ public class Config
 
         // Fall through = no-go
         return false;
+    }
+
+    // TODO: Move this section to Generation?
+    public ItemStack generateArtifactItem(int drawScore) {
+        Random rng = new Random();
+
+        ItemStack stack = null;
+
+        // TODO: The following section should absolutely be based on config files... after the modjam
+        if(drawScore == 0) {
+            // A lump of coal for naughty children who contribute nothing to their artifacts.
+            stack = generateLumpOfCoal();
+        }
+        else if(drawScore <= 5) {
+            // Tier 1 - Iron gear with only improved durability
+            switch(rng.nextInt(3)) {
+                case 0:
+                    stack = generateWaffleIron();
+                    break;
+                default: break;
+            }
+        }
+        else if(drawScore <= 10) {
+            // Tier 2 - Iron gear with some minor enchantments
+        }
+        else if(drawScore <= 15) {
+            // Tier 3 - Diamond gear with some decent enchantments
+        }
+        else if(drawScore <= 20) {
+            // Tier 4 - Diamond gear with some sweet enchantments
+        }
+        else {
+            // Tier 5 - Diamond gear with impossible enchantments
+        }
+
+        // All artifacts are Unbreaking 5
+        if(stack != null)
+            stack.addEnchantment(Enchantments.UNBREAKING, 5);
+
+        return stack;
+    }
+
+    public PotionEffect generateFailureDebuff() {
+        // HACK: Maybe I'm doing this wrong, but this seems to be the oly method for getting an existing PotionEffect
+        // for programmed application to a player
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("Id", 27);   // Bad Luck
+        tag.setInteger("Amplifier", 0);
+        tag.setInteger("Duration", 300);
+        tag.setBoolean("ShowParticles", true);
+
+        PotionEffect effect = PotionEffect.readCustomPotionEffectFromNBT(tag);
+        return effect;
+    }
+
+    // TODO: These definitely need to be in their own place eventually
+    private ItemStack generateLumpOfCoal() {
+        ItemStack stack = new ItemStack(Items.COAL);
+        stack.setStackDisplayName("Lump of coal");
+
+        return stack;
+    }
+
+    private ItemStack generateWaffleIron() {
+        ItemStack stack = new ItemStack(Items.CHAINMAIL_CHESTPLATE);
+        stack.setStackDisplayName("Waffle Iron");
+
+        return stack;
     }
 }
