@@ -1,9 +1,9 @@
 package tas.dfa.common.block.tile;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import tas.dfa.Api.Config;
@@ -18,8 +18,7 @@ import java.util.Random;
 public class TileAncientAnvil extends BaseTile implements ITickable {
 
     @Override
-    public void update()
-    {
+    public void update() {
         // Only handle item consumption on the server!
         if(worldObj.isRemote) return;
 
@@ -57,8 +56,7 @@ public class TileAncientAnvil extends BaseTile implements ITickable {
         // TODO: ?
     }
 
-    public boolean getIsWaitingForBaseItems()
-    {
+    public boolean getIsWaitingForBaseItems() {
         // TODO: Check NBT data
         return false;
     }
@@ -72,16 +70,18 @@ public class TileAncientAnvil extends BaseTile implements ITickable {
             entity.setEntityItemStack(stack);
     }
 
-    private void setIsWaitingForBaseItems(boolean value)
-    {
+    private void setIsWaitingForBaseItems(boolean value) {
         // TODO: Set NBT data
     }
 
-    private void doDraw()
-    {
+    private void doDraw() {
         Random rng = new Random();
 
         // TODO: Add random value to score
         // TODO: Check for overflow of score
+    }
+
+    public void activate(EntityPlayer playerIn) {
+        // TODO: Check current data and either punish the player or give them an artifact
     }
 }
