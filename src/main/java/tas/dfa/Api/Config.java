@@ -112,17 +112,9 @@ public class Config
         return stack;
     }
 
-    public PotionEffect generateFailureDebuff() {
-        // HACK: Maybe I'm doing this wrong, but this seems to be the oly method for getting an existing PotionEffect
-        // for programmed application to a player
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("Id", 27);   // Bad Luck
-        tag.setInteger("Amplifier", 0);
-        tag.setInteger("Duration", 300);
-        tag.setBoolean("ShowParticles", true);
-
-        PotionEffect effect = PotionEffect.readCustomPotionEffectFromNBT(tag);
-        return effect;
+    public PotionEffect generateFailureDebuff()
+    {
+        return new PotionEffect(Potion.getPotionById(27),600,1,false,false);
     }
 
     // TODO: These definitely need to be in their own place eventually
