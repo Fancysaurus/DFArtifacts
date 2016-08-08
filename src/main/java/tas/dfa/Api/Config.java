@@ -15,6 +15,7 @@ import net.minecraft.potion.PotionAbsorption;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.datafix.fixes.PotionItems;
+import tas.dfa.common.item.base.ModItems;
 
 import java.util.Random;
 
@@ -104,7 +105,7 @@ public class Config
         }
         else {
             // Tier 5 - Diamond gear with impossible enchantments
-            switch(rng.nextInt(7)) {
+            switch(rng.nextInt(8)) {
                 case 0: stack = generateAdamantBlade(); break;
                 case 1: stack = generateAdamantBreaker(); break;
                 case 2: stack = generateAdamantPick(); break;
@@ -112,6 +113,7 @@ public class Config
                 case 4: stack = generateAdamantChest(); break;
                 case 5: stack = generateAdamantLeggings(); break;
                 case 6: stack = generateAdamantBoots(); break;
+                case 7: stack = new ItemStack(ModItems.ancientHammer,1);
                 default: break;
             }
         }
