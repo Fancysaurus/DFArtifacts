@@ -31,7 +31,7 @@ public class BlockPool extends BaseBlock implements ITileEntityProvider
         TileEntity pool = worldIn.getTileEntity(pos);
         if(pool instanceof TilePool)
         {
-            ((TilePool)pool).onActivated(worldIn,pos,playerIn,heldItem);
+            ((TilePool)pool).onActivated(worldIn,pos,playerIn,heldItem, hand);
             return true;
         }
         return false;

@@ -88,19 +88,30 @@ public class Config
         }
         else if(drawScore <= 15) {
             // Tier 3 - Diamond gear with some decent enchantments
-            switch(rng.nextInt()) {
+            switch(rng.nextInt(2)) {
+                case 0: stack = generateSpiderSticker(); break;
+                case 1: stack = generateBoneBreaker(); break;
                 default: break;
             }
         }
         else if(drawScore <= 20) {
             // Tier 4 - Diamond gear with some sweet enchantments
-            switch(rng.nextInt()) {
+            switch(rng.nextInt(2)) {
+                case 0: stack = generatePerfectAngler(); break;
+                case 1: stack = generatePerfectArcher(); break;
                 default: break;
             }
         }
         else {
             // Tier 5 - Diamond gear with impossible enchantments
-            switch(rng.nextInt()) {
+            switch(rng.nextInt(7)) {
+                case 0: stack = generateAdamantBlade(); break;
+                case 1: stack = generateAdamantBreaker(); break;
+                case 2: stack = generateAdamantPick(); break;
+                case 3: stack = generateAdamantHelm(); break;
+                case 4: stack = generateAdamantChest(); break;
+                case 5: stack = generateAdamantLeggings(); break;
+                case 6: stack = generateAdamantBoots(); break;
                 default: break;
             }
         }
@@ -175,6 +186,109 @@ public class Config
         stack.setStackDisplayName("Cold Feet");
         stack.addEnchantment(Enchantments.FROST_WALKER, 2);
         stack.addEnchantment(Enchantments.MENDING, 1);
+
+        return stack;
+    }
+
+    private ItemStack generatePerfectAngler() {
+        ItemStack stack = new ItemStack(Items.FISHING_ROD);
+        stack.setStackDisplayName("Perfect Angler");
+        stack.addEnchantment(Enchantments.MENDING, 1);
+        stack.addEnchantment(Enchantments.LURE, 3);
+        stack.addEnchantment(Enchantments.LUCK_OF_THE_SEA, 3);
+
+        return stack;
+    }
+
+    private ItemStack generateAdamantBlade() {
+        ItemStack stack = new ItemStack(Items.DIAMOND_SWORD);
+        stack.setStackDisplayName("Adamant Blade");
+        stack.addEnchantment(Enchantments.MENDING, 1);
+        stack.addEnchantment(Enchantments.SHARPNESS, 5);
+        stack.addEnchantment(Enchantments.LOOTING, 5);
+
+        return stack;
+    }
+
+    private ItemStack generateAdamantBreaker() {
+        ItemStack stack = new ItemStack(Items.DIAMOND_AXE);
+        stack.setStackDisplayName("Adamant Breaker");
+        stack.addEnchantment(Enchantments.MENDING, 1);
+        stack.addEnchantment(Enchantments.SHARPNESS, 5);
+        stack.addEnchantment(Enchantments.KNOCKBACK, 3);
+
+        return stack;
+    }
+
+    private ItemStack generateAdamantPick() {
+        ItemStack stack = new ItemStack(Items.DIAMOND_PICKAXE);
+        stack.setStackDisplayName("Adamant Pick");
+        stack.addEnchantment(Enchantments.MENDING, 1);
+        stack.addEnchantment(Enchantments.FORTUNE, 5);
+        stack.addEnchantment(Enchantments.EFFICIENCY, 5);
+
+        return stack;
+    }
+
+    private ItemStack generateAdamantHelm() {
+        ItemStack stack = new ItemStack(Items.DIAMOND_HELMET);
+        stack.setStackDisplayName("Adamant Helm");
+        stack.addEnchantment(Enchantments.MENDING, 1);
+        stack.addEnchantment(Enchantments.PROTECTION, 5);
+
+        return stack;
+    }
+
+    private ItemStack generateAdamantChest() {
+        ItemStack stack = new ItemStack(Items.DIAMOND_CHESTPLATE);
+        stack.setStackDisplayName("Adamant Chest");
+        stack.addEnchantment(Enchantments.MENDING, 1);
+        stack.addEnchantment(Enchantments.PROTECTION, 5);
+
+        return stack;
+    }
+
+    private ItemStack generateAdamantLeggings() {
+        ItemStack stack = new ItemStack(Items.DIAMOND_LEGGINGS);
+        stack.setStackDisplayName("Adamant Leggings");
+        stack.addEnchantment(Enchantments.MENDING, 1);
+        stack.addEnchantment(Enchantments.PROTECTION, 5);
+
+        return stack;
+    }
+
+    private ItemStack generateAdamantBoots() {
+        ItemStack stack = new ItemStack(Items.DIAMOND_BOOTS);
+        stack.setStackDisplayName("Adamant Boots");
+        stack.addEnchantment(Enchantments.MENDING, 1);
+        stack.addEnchantment(Enchantments.PROTECTION, 5);
+
+        return stack;
+    }
+
+    private ItemStack generateSpiderSticker() {
+        ItemStack stack = new ItemStack(Items.DIAMOND_SWORD);
+        stack.setStackDisplayName("Spider Sticker");
+        stack.addEnchantment(Enchantments.BANE_OF_ARTHROPODS, 5);
+
+        return stack;
+    }
+
+    private ItemStack generateBoneBreaker() {
+        ItemStack stack = new ItemStack(Items.DIAMOND_AXE);
+        stack.setStackDisplayName("Bone Breaker");
+        stack.addEnchantment(Enchantments.SMITE, 5);
+
+        return stack;
+    }
+
+    private ItemStack generatePerfectArcher() {
+        ItemStack stack = new ItemStack(Items.BOW);
+        stack.setStackDisplayName("Perfect Archer");
+        stack.addEnchantment(Enchantments.MENDING, 1);
+        stack.addEnchantment(Enchantments.INFINITY, 1);
+        stack.addEnchantment(Enchantments.POWER, 5);
+        stack.addEnchantment(Enchantments.PUNCH, 2);
 
         return stack;
     }
