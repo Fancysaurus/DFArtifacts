@@ -26,11 +26,10 @@ public class ItemAncientHammer extends  BaseItem
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-        attacker.attackEntityFrom(DamageSource.magic,4.0F);
-
+        target.attackEntityFrom(DamageSource.magic,8.0F);
         if(target.isEntityUndead())
         {
-            attacker.attackEntityFrom(DamageSource.magic, 2.0F);
+            target.attackEntityFrom(DamageSource.magic, 2.0F);
             target.setFire(5);
         }
         return super.hitEntity(stack, target, attacker);
@@ -38,7 +37,7 @@ public class ItemAncientHammer extends  BaseItem
 
     @Override
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        List<EntityLivingBase> entitiesHit = worldIn.getEntitiesWithinAABB(EntityLivingBase.class,new AxisAlignedBB(pos.getX()-2,pos.getY()-2,pos.getZ()-2,pos.getX()+2,pos.getY()+2,pos.getZ()+2));
+        List<EntityLivingBase> entitiesHit = worldIn.getEntitiesWithinAABB(EntityLivingBase.class,new AxisAlignedBB(pos.getX()-2,pos.getY()-2,pos.getZ()-2,pos.getX()+2,pos.getY()+1.5D,pos.getZ()+2));
         for(EntityLivingBase entity : entitiesHit)
         {
             if(entity instanceof EntityPlayer);
