@@ -68,10 +68,11 @@ public class Config
         }
         else if(drawScore <= 5) {
             // Tier 1 - Iron gear with only improved durability
-            switch(rng.nextInt(3)) {
-                case 0:
-                    stack = generateWaffleIron();
-                    break;
+            switch(rng.nextInt(4)) {
+                case 0: stack = generateWaffleChest(); break;
+                case 1: stack = generateWaffleLeggings(); break;
+                case 2: stack = generateWaffleBoots(); break;
+                case 3: stack = generateWaffleHelmet(); break;
                 default: break;
             }
         }
@@ -116,9 +117,30 @@ public class Config
         return stack;
     }
 
-    private ItemStack generateWaffleIron() {
+    private ItemStack generateWaffleChest() {
         ItemStack stack = new ItemStack(Items.CHAINMAIL_CHESTPLATE);
-        stack.setStackDisplayName("Waffle Iron");
+        stack.setStackDisplayName("Waffle Iron Chest");
+
+        return stack;
+    }
+
+    private ItemStack generateWaffleLeggings() {
+        ItemStack stack = new ItemStack(Items.CHAINMAIL_LEGGINGS);
+        stack.setStackDisplayName("Waffle Iron Leggings");
+
+        return stack;
+    }
+
+    private ItemStack generateWaffleHelmet() {
+        ItemStack stack = new ItemStack(Items.CHAINMAIL_HELMET);
+        stack.setStackDisplayName("Waffle Iron Helmet");
+
+        return stack;
+    }
+
+    private ItemStack generateWaffleBoots() {
+        ItemStack stack = new ItemStack(Items.CHAINMAIL_BOOTS);
+        stack.setStackDisplayName("Waffle Iron Boots");
 
         return stack;
     }
