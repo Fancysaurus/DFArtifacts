@@ -1,4 +1,4 @@
-package tas.dfa.common.potion;
+package tas.dfa.common.potion.base;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;

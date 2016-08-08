@@ -11,7 +11,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import tas.dfa.common.block.tile.base.BaseTile;
 import tas.dfa.common.item.base.ModItems;
-import tas.dfa.common.potion.ModPotions;
+import tas.dfa.common.potion.base.ModPotions;
 
 /**
  * Created by fancysaurus on 8/6/16.

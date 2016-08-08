@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import tas.dfa.common.block.base.ModBlocks;
 import tas.dfa.common.item.base.ModItems;
-import tas.dfa.common.potion.ModPotions;
+import tas.dfa.common.potion.base.ModPotions;
 
 /**
  * Created by fancysaurus on 8/4/16.
