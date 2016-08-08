@@ -37,7 +37,7 @@ public class itemAncientSword extends BaseItem {
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
-        
+
         return super.hitEntity(stack, target, attacker);
     }
 
