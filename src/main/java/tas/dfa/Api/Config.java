@@ -1,5 +1,6 @@
 package tas.dfa.Api;
 
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
@@ -78,15 +79,30 @@ public class Config
         }
         else if(drawScore <= 10) {
             // Tier 2 - Iron gear with some minor enchantments
+            switch(rng.nextInt(3)) {
+                case 0: stack = generateLightSaber(); break;
+                case 1: stack = generateRustyDuckling(); break;
+                case 2: stack = generateColdFeet(); break;
+                default: break;
+            }
         }
         else if(drawScore <= 15) {
             // Tier 3 - Diamond gear with some decent enchantments
+            switch(rng.nextInt()) {
+                default: break;
+            }
         }
         else if(drawScore <= 20) {
             // Tier 4 - Diamond gear with some sweet enchantments
+            switch(rng.nextInt()) {
+                default: break;
+            }
         }
         else {
             // Tier 5 - Diamond gear with impossible enchantments
+            switch(rng.nextInt()) {
+                default: break;
+            }
         }
 
         // All artifacts are Unbreaking 5
@@ -141,6 +157,32 @@ public class Config
     private ItemStack generateWaffleBoots() {
         ItemStack stack = new ItemStack(Items.CHAINMAIL_BOOTS);
         stack.setStackDisplayName("Waffle Iron Boots");
+
+        return stack;
+    }
+
+    private ItemStack generateLightSaber() {
+        ItemStack stack = new ItemStack(Items.IRON_SWORD);
+        stack.setStackDisplayName("Light Saber");
+        stack.addEnchantment(Enchantments.SHARPNESS, 3);
+
+        return stack;
+    }
+
+    private ItemStack generateRustyDuckling() {
+        ItemStack stack = new ItemStack(Items.IRON_HELMET);
+        stack.setStackDisplayName("Rusty Duckling");
+        stack.addEnchantment(Enchantments.AQUA_AFFINITY, 1);
+        stack.addEnchantment(Enchantments.DEPTH_STRIDER, 2);
+
+        return stack;
+    }
+
+    private ItemStack generateColdFeet() {
+        ItemStack stack = new ItemStack(Items.IRON_BOOTS);
+        stack.setStackDisplayName("Cold Feet");
+        stack.addEnchantment(Enchantments.FROST_WALKER, 2);
+        stack.addEnchantment(Enchantments.MENDING, 1);
 
         return stack;
     }
