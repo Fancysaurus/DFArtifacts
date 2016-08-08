@@ -14,7 +14,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import tas.dfa.Api.Config;
 import tas.dfa.common.block.tile.base.BaseTile;
-import tas.dfa.common.potion.ModPotions;
+import tas.dfa.common.potion.base.ModPotions;
 import tas.dfa.common.potion.PotionMood;
 
 import java.util.List;

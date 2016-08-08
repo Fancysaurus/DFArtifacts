@@ -1,0 +1,6 @@
+{
+  "parent":"dfa:item/ItemModelBase",
+  "textures":{
+    "layer0":"dfa:items/ancientHammer"
+  }
+}

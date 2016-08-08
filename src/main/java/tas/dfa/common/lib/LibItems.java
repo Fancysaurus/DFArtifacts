@@ -8,5 +8,5 @@ public class LibItems
     public static final String testOrb = "testOrb";
     public static final String soulWater ="soulWater";
     public static final String swordArtifact = "swordArtifact";
-    public static final String hammerArtifact = "hammerArtifact";
+    public static final String hammerArtifact = "ancientHammer";
 }
