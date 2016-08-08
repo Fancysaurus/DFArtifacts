@@ -13,6 +13,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextComponentString;
 import tas.dfa.Api.Config;
 import tas.dfa.common.block.tile.base.BaseTile;
+import tas.dfa.common.potion.ModPotions;
+import tas.dfa.common.potion.PotionMood;
 
 import java.util.List;
 import java.util.Random;
@@ -43,6 +45,11 @@ public class TileAncientAnvil extends BaseTile {
     }
 
     public boolean activate(EntityPlayer playerIn) {
+        if(!playerIn.isPotionActive(ModPotions.mood)) {
+            playerIn.addChatComponentMessage(new TextComponentString("You need time to reflect first..."));
+            return false;
+        }
+
         ItemStack stack = playerIn.getHeldItemMainhand();
 
         if(stack == null) {
@@ -72,16 +79,23 @@ public class TileAncientAnvil extends BaseTile {
         return true;
     }
 
-    private void reset() {
+    private void reset(EntityPlayer playerIn) {
         isWaitingForBaseItem = true;
         currentDrawValue = 0;
+        playerIn.removePotionEffect(ModPotions.mood);
         markDirty();
     }
 
     private void doDraw(EntityPlayer playerIn) {
         Random rng = new Random();
 
-        int value = rng.nextInt(3) + 1;
+        int value = 0;
+        int tier = 1 + ((currentDrawValue - 1) / 5);
+        int draw = 0;
+        do {
+            value += rng.nextInt(3) + 1;
+            draw++;
+        } while(draw < tier);
 
         currentDrawValue += value;
         if(currentDrawValue > 21) {
@@ -89,12 +103,33 @@ public class TileAncientAnvil extends BaseTile {
 
             PotionEffect effect = Config.instance.generateFailureDebuff();
             if(effect != null) playerIn.addPotionEffect(effect);
-            reset();
-        }
-        else if(currentDrawValue == 21) {
-            playerIn.addChatComponentMessage(new TextComponentString("Perfect! Take your prize!"));
+            reset(playerIn);
         }
         else {
+            String message = null;
+            switch(tier) {
+                case 0:
+                    message = "Add something...";
+                    break;
+                case 1:
+                    message = "Your work must continue...";
+                    break;
+                case 2:
+                    message = "A basic artifact...";
+                    break;
+                case 3:
+                    message = "A powerful artifact...";
+                    break;
+                case 4:
+                    message = "A grand artifact...";
+                    break;
+                case 5:
+                    message = "Your perfect artifact is ready!";
+                    break;
+            }
+
+            if(message != null)
+                playerIn.addChatComponentMessage(new TextComponentString(message));
             markDirty();
         }
     }
@@ -119,6 +154,6 @@ public class TileAncientAnvil extends BaseTile {
             }
         }
 
-        reset();
+        reset(playerIn);
     }
 }
