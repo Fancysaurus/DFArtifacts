@@ -11,6 +11,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.World;
 import tas.dfa.Api.Config;
 import tas.dfa.common.block.tile.base.BaseTile;
 import tas.dfa.common.potion.ModPotions;
@@ -44,7 +45,7 @@ public class TileAncientAnvil extends BaseTile {
         tag.setInteger("currentDrawValue", currentDrawValue);
     }
 
-    public boolean activate(EntityPlayer playerIn) {
+    public boolean activate(World world, EntityPlayer playerIn) {
         if(!playerIn.isPotionActive(ModPotions.mood)) {
             playerIn.addChatComponentMessage(new TextComponentString("You need time to reflect first..."));
             return false;
@@ -53,7 +54,7 @@ public class TileAncientAnvil extends BaseTile {
         ItemStack stack = playerIn.getHeldItemMainhand();
 
         if(stack == null) {
-            finish(playerIn);
+            finish(world, playerIn);
         }
         else {
             if (isWaitingForBaseItem) {
@@ -134,7 +135,7 @@ public class TileAncientAnvil extends BaseTile {
         }
     }
 
-    private void finish(EntityPlayer playerIn) {
+    private void finish(World world, EntityPlayer playerIn) {
         if(isWaitingForBaseItem) return;
 
         if(currentDrawValue > 21) {
@@ -150,7 +151,15 @@ public class TileAncientAnvil extends BaseTile {
                 playerIn.addChatComponentMessage(
                         new TextComponentString(
                                 "You have crafted the " + stack.getDisplayName()));
-                playerIn.inventory.addItemStackToInventory(stack);
+                if(!playerIn.inventory.addItemStackToInventory(stack)) {
+                    EntityItem output = new EntityItem(
+                            world,
+                            pos.getX() + 0.5,
+                            pos.getY() + 1.5,
+                            pos.getZ() + 0.5,
+                            stack);
+                    world.spawnEntityInWorld(output);
+                }
             }
         }
 

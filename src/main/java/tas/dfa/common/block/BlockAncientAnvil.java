@@ -68,6 +68,6 @@ public class BlockAncientAnvil extends BaseBlock implements ITileEntityProvider{
                         : null;
         if(anvil == null) return false;
 
-        return anvil.activate(playerIn);
+        return anvil.activate(worldIn, playerIn);
     }
 }

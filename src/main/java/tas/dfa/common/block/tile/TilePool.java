@@ -6,6 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
@@ -19,26 +20,30 @@ import tas.dfa.common.potion.ModPotions;
 public class TilePool extends BaseTile
 {
 
-    public void onActivated(World world, BlockPos pos, EntityPlayer player, ItemStack heldItem)
+    public void onActivated(World world, BlockPos pos, EntityPlayer player, ItemStack heldItem, EnumHand hand)
     {
-        if(world.isRemote)
-            return;
-        if(heldItem == null)
-        {
-            player.addPotionEffect(new PotionEffect(ModPotions.mood,5000));
-        }
-        else if(heldItem.getItem() == Items.GLASS_BOTTLE)
-        {
-            if(player.experienceLevel >= 5)
-            {
-                EntityItem output = new EntityItem(world,pos.getX()+0.5,pos.getY()+1.5,pos.getZ()+0.5, new ItemStack(ModItems.soulWater,1));
-                world.spawnEntityInWorld(output);
-                if(!player.capabilities.isCreativeMode)
-                {
-                    //Consume the item
+        if(world.isRemote) return;
 
-                    //Reduce the XP
-                    
+        if(heldItem.getItem() == Items.GLASS_BOTTLE)
+        {
+            if(player.capabilities.isCreativeMode || player.experienceLevel >= 5)
+            {
+                if(!player.capabilities.isCreativeMode) {
+                    heldItem.stackSize--;
+                    if(heldItem.stackSize == 0)
+                        player.setHeldItem(hand, null);
+                    player.experienceLevel -= 5;
+                }
+
+                ItemStack stack = new ItemStack(ModItems.soulWater, 1);
+                if(!player.inventory.addItemStackToInventory(stack)) {
+                    EntityItem output = new EntityItem(
+                            world,
+                            pos.getX() + 0.5,
+                            pos.getY() + 1.5,
+                            pos.getZ() + 0.5,
+                            stack);
+                    world.spawnEntityInWorld(output);
                 }
             }
             else
@@ -48,7 +53,7 @@ public class TilePool extends BaseTile
         }
         else
         {
-
+            player.addPotionEffect(new PotionEffect(ModPotions.mood,5000));
         }
     }
 

@@ -27,13 +27,16 @@ public class ItemSoulWater extends BaseItem
 
     @Override
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(worldIn.getBlockState(pos).getBlock() == Blocks.ANVIL)
-        {
-            worldIn.setBlockState(pos, ModBlocks.ancientAnvil.getDefaultState());
-            worldIn.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE,pos.getX(),pos.getY(),pos.getZ(),0,5,0);
-        }
+        if (worldIn.getBlockState(pos).getBlock() != Blocks.ANVIL) return EnumActionResult.FAIL;
 
-        return EnumActionResult.FAIL;
+        worldIn.setBlockState(pos, ModBlocks.ancientAnvil.getDefaultState());
+        worldIn.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, pos.getX(), pos.getY(), pos.getZ(), 0, 5, 0);
+
+        stack.stackSize--;
+        if(stack.stackSize == 0)
+            playerIn.setHeldItem(hand, null);
+
+        return EnumActionResult.SUCCESS;
     }
 
     @Override
