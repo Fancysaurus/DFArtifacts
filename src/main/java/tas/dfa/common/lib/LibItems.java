@@ -7,4 +7,5 @@ public class LibItems
 {
     public static final String testOrb = "testOrb";
     public static final String soulWater ="soulWater";
+    public static final String swordArtifact = "swordArtifact";
 }

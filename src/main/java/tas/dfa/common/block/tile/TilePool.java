@@ -5,11 +5,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import tas.dfa.common.block.tile.base.BaseTile;
 import tas.dfa.common.item.base.ModItems;
+import tas.dfa.common.potion.ModPotions;
 
 /**
  * Created by fancysaurus on 8/6/16.
@@ -21,8 +23,11 @@ public class TilePool extends BaseTile
     {
         if(world.isRemote)
             return;
-
-        if(heldItem.getItem() == Items.GLASS_BOTTLE)
+        if(heldItem == null)
+        {
+            player.addPotionEffect(new PotionEffect(ModPotions.mood,5000));
+        }
+        else if(heldItem.getItem() == Items.GLASS_BOTTLE)
         {
             if(player.experienceLevel >= 5)
             {
