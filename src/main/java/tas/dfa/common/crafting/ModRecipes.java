@@ -16,8 +16,8 @@ public class ModRecipes
 {
     public static void init()
     {
-        addOreDictRecipe(new ItemStack(ModBlocks.pool),"SBS"," S ","SSS",'S',new ItemStack(Blocks.STONE).getItem(),'B', Items.WATER_BUCKET);
-        
+        addOreDictRecipe(new ItemStack(ModBlocks.pool),"SBS"," S ","SSS",'S',Blocks.STONE,'B', Items.WATER_BUCKET);
+
     }
 
     private static void addOreDictRecipe(ItemStack output,Object... recipe)

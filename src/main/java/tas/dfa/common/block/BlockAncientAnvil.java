@@ -1,6 +1,6 @@
 package tas.dfa.common.block;
 
-import com.sun.istack.internal.Nullable;
+
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -17,6 +17,8 @@ import net.minecraft.world.World;
 import tas.dfa.common.block.base.BaseBlock;
 import tas.dfa.common.block.tile.TileAncientAnvil;
 import tas.dfa.common.lib.LibBlocks;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by fancysaurus on 8/4/16.

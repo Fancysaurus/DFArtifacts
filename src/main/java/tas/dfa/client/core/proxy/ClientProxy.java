@@ -1,7 +1,10 @@
 package tas.dfa.client.core.proxy;
 
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import tas.dfa.client.core.handler.ModelHandler;
+import tas.dfa.client.render.tile.RenderTilePool;
+import tas.dfa.common.block.tile.TilePool;
 import tas.dfa.common.core.proxy.CommonProxy;
 
 /**
@@ -15,5 +18,11 @@ public class ClientProxy extends CommonProxy
         super.preInit(event);
 
         ModelHandler.preInit();
+        initRenderers();
+    }
+
+    public void initRenderers()
+    {
+        ClientRegistry.bindTileEntitySpecialRenderer(TilePool.class,new RenderTilePool());
     }
 }

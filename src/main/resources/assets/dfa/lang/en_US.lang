@@ -4,6 +4,7 @@ itemGroup.dfa=DFArtifacts
 #Item Names
 item.dfa:testOrb.name=Orb of Testing
 item.dfa:soulWater.name=Soul Water
+item.dfa:ancientHammer.name=Hammer of Dwarvenkind
 
 #Block Names
 tile.dfa:ancientAnvil.name=Anvil of the Ancients
