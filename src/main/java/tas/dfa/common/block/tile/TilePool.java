@@ -22,9 +22,9 @@ public class TilePool extends BaseTile
 
     public void onActivated(World world, BlockPos pos, EntityPlayer player, ItemStack heldItem, EnumHand hand)
     {
-        if(world.isRemote) return;
+        //if(world.isRemote) return;
 
-        if(heldItem.getItem() == Items.GLASS_BOTTLE)
+        if(heldItem != null && heldItem.getItem() == Items.GLASS_BOTTLE)
         {
             if(player.capabilities.isCreativeMode || player.experienceLevel >= 5)
             {

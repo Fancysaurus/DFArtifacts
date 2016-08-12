@@ -6,159 +6,91 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
 /**
  * Created by fancysaurus on 8/5/16.
  */
-public abstract class TileSimpleInventory extends BaseTile implements ISidedInventory
+public abstract class TileSimpleInventory extends BaseTile
 {
-    protected ItemStack[] inventorySlots = new ItemStack[getSizeInventory()];
+    protected ItemStackHandler itemHandler = createItemHandler();
 
-    @Override
-    public int[] getSlotsForFace(EnumFacing side) {
-        return new int[0];
-    }
-
-    @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        return false;
-    }
-
-    @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-        return false;
-    }
-
-    @Override
     public abstract int getSizeInventory();
 
-    @Nullable
-    @Override
-    public ItemStack getStackInSlot(int index)
+    public ItemStackHandler createItemHandler()
     {
-        return inventorySlots[index];
+        return new SimpleItemStackHandler(this,true);
     }
 
-    @Nullable
     @Override
-    public ItemStack decrStackSize(int index, int count) {
-        if(inventorySlots[index] != null)
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        compound.merge(itemHandler.serializeNBT());
+        return super.writeToNBT(compound);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        itemHandler = createItemHandler();
+        itemHandler.deserializeNBT(compound);
+        super.readFromNBT(compound);
+    }
+
+    public IItemHandlerModifiable getItemHandler()
+    {
+        return itemHandler;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability,facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemHandler);
+
+        return super.getCapability(capability, facing);
+    }
+
+    protected static class SimpleItemStackHandler extends ItemStackHandler
+    {
+        private final boolean allowWrite;
+        private final TileEntity tileEntity;
+
+        public SimpleItemStackHandler(TileSimpleInventory simpleInventory,boolean allowWrite)
         {
-            ItemStack stackAt;
-            if(inventorySlots[index].stackSize <= count)
-            {
-                stackAt = inventorySlots[index];
-                inventorySlots[index] = null;
-                inventoryChanged(index);
-                return stackAt;
-            }
+            super(simpleInventory.getSizeInventory());
+            this.allowWrite = allowWrite;
+            this.tileEntity = simpleInventory;
         }
 
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public ItemStack removeStackFromSlot(int index) {
-        return null;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
-
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return false;
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {
-
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player) {
-
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value) {
-
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 0;
-    }
-
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
-
-    @Override
-    public void writeCustomNBT(NBTTagCompound compound)
-    {
-        NBTTagList items = new NBTTagList();
-        for(int i = 0; i < inventorySlots.length; i++)
-        {
-            if(inventorySlots[i] != null)
-            {
-                NBTTagCompound itemSlot = new NBTTagCompound();
-                itemSlot.setByte("Slot",(byte)i);
-                inventorySlots[i].writeToNBT(itemSlot);
-                items.appendTag(itemSlot);
-            }
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            if(allowWrite)
+                return super.insertItem(slot, stack, simulate);
+            else
+                return stack;
         }
-        compound.setTag("Items",items);
-    }
 
-    @Override
-    public void readCustomNBT(NBTTagCompound compound)
-    {
-        NBTTagList items = compound.getTagList("Items", 10);
-        inventorySlots = new ItemStack[getSizeInventory()];
-        for(int i = 0; i < items.tagCount(); i++)
-        {
-            NBTTagCompound itemSlot = items.getCompoundTagAt(i);
-            byte slot = itemSlot.getByte("Slot");
-            if(slot >= 0 && slot < inventorySlots.length)
-                inventorySlots[slot] = ItemStack.loadItemStackFromNBT(itemSlot);
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if(allowWrite)
+                return super.extractItem(slot, amount, simulate);
+            else
+                return null;
         }
-    }
 
-    public void inventoryChanged(int index)
-    {
-        //No-Op//
+        @Override
+        protected void onContentsChanged(int slot) {
+            tileEntity.markDirty();
+        }
     }
 }

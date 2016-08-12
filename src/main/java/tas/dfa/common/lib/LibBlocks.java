@@ -7,4 +7,7 @@ public class LibBlocks
 {
     public static final String ancientAnvil = "ancientAnvil";
     public static final String pool = "pool";
+    public static final String barrel = "barrel";
+    public static final String coalForge = "coalForge";
+    public static final String metalBlank = "metalBlank";
 }

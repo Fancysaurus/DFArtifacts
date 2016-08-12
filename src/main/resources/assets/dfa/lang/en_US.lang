@@ -5,7 +5,14 @@ itemGroup.dfa=DFArtifacts
 item.dfa:testOrb.name=Orb of Testing
 item.dfa:soulWater.name=Soul Water
 item.dfa:ancientHammer.name=Hammer of Dwarvenkind
+item.dfa:blank.name=Blank
+item.dfa:tongsEmpty.name=Tongs
+item.dfa:tongsFull.name=Tongs(Full)
+item.dfa:smithHammer.name=Blacksmith's Hammer
+
 
 #Block Names
 tile.dfa:ancientAnvil.name=Anvil of the Ancients
 tile.dfa:pool.name=Pool of Reflection
+tile.dfa:coalForge.name=Coal Forge
+tile.dfa:barrel.name=Wooden Barrel

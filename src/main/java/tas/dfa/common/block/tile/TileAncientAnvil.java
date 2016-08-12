@@ -14,6 +14,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import tas.dfa.Api.Config;
 import tas.dfa.common.block.tile.base.BaseTile;
+import tas.dfa.common.block.tile.base.TileSimpleInventory;
 import tas.dfa.common.potion.base.ModPotions;
 import tas.dfa.common.potion.PotionMood;
 
@@ -23,7 +24,7 @@ import java.util.Random;
 /**
  * Created by David on 8/4/2016.
  */
-public class TileAncientAnvil extends BaseTile {
+public class TileAncientAnvil extends TileSimpleInventory{
 
     private int currentDrawValue = 0;
     private boolean isWaitingForBaseItem = true;
@@ -164,5 +165,10 @@ public class TileAncientAnvil extends BaseTile {
         }
 
         reset(playerIn);
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return 1;
     }
 }
