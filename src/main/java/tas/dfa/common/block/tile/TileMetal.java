@@ -4,13 +4,16 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import tas.dfa.common.block.tile.base.BaseTile;
 import tas.dfa.common.item.base.BaseItem;
+import tas.dfa.common.item.base.ModItems;
 
 /**
  * Created by fancysaurus on 8/11/16.
@@ -20,10 +23,11 @@ public class TileMetal extends BaseTile
     public int progress = 0;
     public int heat = 500;
     public int HitsTillDone = 5;
+    public ItemStack blankStack;
 
     public TileMetal()
     {
-
+        blankStack = new ItemStack(ModItems.blank,1);
     }
 
     public void Strike(World worldIn, EntityPlayer playerIn)
@@ -38,6 +42,8 @@ public class TileMetal extends BaseTile
             worldIn.setBlockToAir(pos);
         }
     }
+
+
 
     @Override
     public void writeCustomNBT(NBTTagCompound compound)
